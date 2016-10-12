@@ -18,8 +18,9 @@ description = "A safe binding for openvr."
 name = "openvr"
 path = "src/lib.rs"
 
-[dependencies]
-openvr_sys = "1.0.2"
+[dependencies.openvr_sys]
+path = "../rust-openvr-sys"
+version = "1.0.1"
 
 [dev_dependencies]
 glium = "0.14.0"

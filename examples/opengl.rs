@@ -38,6 +38,13 @@ pub fn main() {
             }
         };
 
+        println!("TRACKED:{:?}", system.tracked_devices(0.0).count);
+
+        for device in system.tracked_devices(0.0).as_slice() {
+            println!("\t{:?}", device.device_class());
+            println!("\t{:?}", device.is_connected);
+        }
+
         for device in system.tracked_devices(0.0).connected_iter() {
             println!("device found :) -> {}",
                 device.get_property_string(openvr::tracking::TrackedDeviceStringProperty::RenderModelName).unwrap_or_else(|_| { panic!("No render model")} ));
@@ -137,7 +144,7 @@ pub fn main() {
         let program = glium::Program::from_source(&display, vertex_shader_src, fragment_shader_src, None).unwrap();
 
         // load controller models
-        let controller = models.load(String::from("lh_basestation_vive")).unwrap_or_else(|err| {
+        let controller = models.load(String::from("vr_controller_vive_1_5")).unwrap_or_else(|err| {
             openvr::shutdown(); panic!("controller render model not found: {:?}", err) });
 
         let mut controller_vertices: Vec<Vertex> = Vec::new();
@@ -223,7 +230,7 @@ pub fn main() {
                         left_matrix *= matrix;
                         right_matrix *= matrix;
                     },
-                    openvr::tracking::TrackedDeviceClass::TrackingReference => {
+                    openvr::tracking::TrackedDeviceClass::Controller => {
                         if once { continue; }
                         once = true;
 
